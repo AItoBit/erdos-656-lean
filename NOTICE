@@ -1,0 +1,25 @@
+This package reproduces the formalization of Erdős Problem 656 hosted by
+Boris Alexeev (plby) in plby/lean-proofs at commit
+8822f7ddef30fadbd92e1c6ab4ed897af356af5e,
+src/latest/ErdosProblems/Erdos656.lean.
+
+The original file states: Original license: Apache 2.0. Note: This file has
+been modified. Its formal-automation credits name OpenAI Codex and GPT-5.6 Sol.
+This package adds module visibility, splits the file, and supplies independent
+Challenge/Solution declarations and registry metadata. It claims no novelty.
+
+The diagonal spectral-measure construction includes adapted Kitware AIQ code.
+Copyright (c) 2026 Kitware, Inc. All rights reserved.
+Released under the Apache License 2.0.
+The upstream source credits Jon Crall and Claude Opus 5; the plby source also
+credits OpenAI Codex for adaptations.
+A matching earlier upstream file can be inspected at:
+https://github.com/AIQ-Kitware/aiq-dkps-formalization/blob/adfcc7e315c173a5daacad5bba892a00f57aed66/ForTauCeti/Analysis/InnerProductSpace/BorelCalculus/DiagonalMeasure.lean
+Its namespace block matches the corresponding 185 lines of the plby source.
+This identifies an inspected byte-identical version, not a claim that the
+original formalizer selected that exact commit.
+
+Mathematical authors: Bryna Kra, Joel Moreira, Florian K. Richter, and Donald
+Robertson. A proof of Erdős's B+B+t conjecture, Communications of the American
+Mathematical Society 4 (2024), 480–494. DOI: 10.1090/cams/34.
+The mathematical paper is licensed CC BY 3.0. Its text is not bundled here.

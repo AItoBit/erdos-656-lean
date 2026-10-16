@@ -1,0 +1,6 @@
+Erdos656.erdos_656 {A : Set ℕ} (hA : Erdos656.HasPositiveUpperDensity A) :
+  ∃ B, B.Infinite ∧ B ⊆ A ∧ Erdos656.HasTranslatedRestrictedPairSums A B
+Palomar656.erdos_656 {numbers : Set ℕ} (positive_density : 0 < Palomar656.upperDensity numbers) :
+  ∃ selected, selected.Infinite ∧ selected ⊆ numbers ∧ Palomar656.HasTranslatedRestrictedPairSums numbers selected
+'Erdos656.erdos_656' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Palomar656.erdos_656' depends on axioms: [propext, Classical.choice, Quot.sound]

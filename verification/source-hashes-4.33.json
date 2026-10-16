@@ -1,0 +1,26 @@
+[
+  {
+    "Path": "C:\\Users\\Usuario\\Downloads\\erdos\\erdos656-lean\\Erdos656.lean",
+    "Hash": "DCAA3A3B81029C5F108F910E487D789D6E07FF2B33AAC233E07D5D18E82F07FE"
+  },
+  {
+    "Path": "C:\\Users\\Usuario\\Downloads\\erdos\\erdos656-lean\\Erdos656\\Foundation.lean",
+    "Hash": "B6E93BDADAFC153A6C73A6BF0BD56DF892DF5E3CC61DFCF5B378D846EE6EC3EB"
+  },
+  {
+    "Path": "C:\\Users\\Usuario\\Downloads\\erdos\\erdos656-lean\\Erdos656\\Proof.lean",
+    "Hash": "0FF675B7B5C88686691A32835873F08351BEE508F7722E764F5FC06CF8B9B495"
+  },
+  {
+    "Path": "C:\\Users\\Usuario\\Downloads\\erdos\\erdos656-lean\\Challenge.lean",
+    "Hash": "CF13895AF045C973C226169B616723BE2864AD604B75706BC068C72B986DCAA9"
+  },
+  {
+    "Path": "C:\\Users\\Usuario\\Downloads\\erdos\\erdos656-lean\\Solution.lean",
+    "Hash": "E3A86BA2AA89EF20D80E8D85184B7E2D06A408AD55E9D38C9FDAFF7BDF995BDD"
+  },
+  {
+    "Path": "C:\\Users\\Usuario\\Downloads\\erdos\\erdos656-lean\\Audit.lean",
+    "Hash": "75585E4FA6DD71FE6C1BF16CE9BD6AAE572D6282DC0BB0B33A15AEAF1D0C749C"
+  }
+]

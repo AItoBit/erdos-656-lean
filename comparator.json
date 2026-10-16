@@ -1,0 +1,17 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "Palomar656.erdos_656"
+  ],
+  "definition_names": [
+    "Palomar656.countIn",
+    "Palomar656.upperDensity",
+    "Palomar656.HasTranslatedRestrictedPairSums"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ]
+}
