@@ -1090,7 +1090,7 @@ theorem empirical_limit_measurePreserving (A : Set ℕ)
       (tendsto_natCast_atTop_atTop.comp hLtop)
   have hsame : Tendsto
       (fun k => (empiricalMeasure A (N k - 1)).map
-        continuous_symbolicShift.measurable.aemeasurable)
+        symbolicShift)
       atTop (𝓝 μ) := by
     rw [ProbabilityMeasure.tendsto_iff_forall_integral_tendsto]
     intro f
@@ -1119,7 +1119,7 @@ theorem empirical_limit_measurePreserving (A : Set ℕ)
             (inv_nonneg.mpr (Nat.cast_nonneg _))
     have hidentity (k : ℕ) :
         ∫ x, f x ∂((empiricalMeasure A (N k - 1)).map
-            continuous_symbolicShift.measurable.aemeasurable : Measure SymbolicSpace) =
+            symbolicShift : Measure SymbolicSpace) =
           ∫ x, f x ∂(empiricalMeasure A (N k - 1) : Measure SymbolicSpace) +
             ((L k : ℝ))⁻¹ * (g (L k) - g 0) := by
       change ∫ x, f x ∂Measure.map symbolicShift
@@ -1154,13 +1154,13 @@ theorem empirical_limit_measurePreserving (A : Set ℕ)
       rw [htel]
       ring
     rw [show (fun k => ∫ x, f x ∂((empiricalMeasure A (N k - 1)).map
-        continuous_symbolicShift.measurable.aemeasurable : Measure SymbolicSpace)) =
+        symbolicShift : Measure SymbolicSpace)) =
         fun k => ∫ x, f x ∂(empiricalMeasure A (N k - 1) : Measure SymbolicSpace) +
           ((L k : ℝ))⁻¹ * (g (L k) - g 0) by funext k; exact hidentity k]
     simpa using horig.add hboundary
   have hmaplim := ProbabilityMeasure.tendsto_map_of_tendsto_of_continuous
     (fun k => empiricalMeasure A (N k - 1)) μ hlim continuous_symbolicShift
-  have heq : μ.map continuous_symbolicShift.measurable.aemeasurable = μ :=
+  have heq : μ.map symbolicShift = μ :=
     tendsto_nhds_unique hmaplim hsame
   refine ⟨continuous_symbolicShift.measurable, ?_⟩
   exact congrArg ProbabilityMeasure.toMeasure heq
@@ -1289,7 +1289,7 @@ theorem injective_probabilityMoments : Injective probabilityMoments := by
 forward orbit closure of the coding point for `A`. -/
 def invariantProbabilities (A : Set ℕ) :
     Set (ProbabilityMeasure SymbolicSpace) :=
-  {ν | ν.map continuous_symbolicShift.measurable.aemeasurable = ν} ∩
+  {ν | ν.map symbolicShift = ν} ∩
     carriedProbabilities A
 
 theorem isClosed_invariantProbabilities (A : Set ℕ) :
@@ -1509,7 +1509,7 @@ theorem ergodic_of_extreme_maximizingInvariantProbability
   obtain ⟨hs, hsc⟩ :
       (ν : Measure SymbolicSpace) s ≠ 0 ∧
         (ν : Measure SymbolicSpace) sᶜ ≠ 0 := by
-    simpa [eventuallyConst_set, ae_iff, and_comm] using! H
+    simpa [eventuallyEmptyOrUniv_iff, ae_iff, and_comm] using! H
   let νs : ProbabilityMeasure SymbolicSpace :=
     conditionedProbability ν s hs
   let νc : ProbabilityMeasure SymbolicSpace :=
@@ -4130,7 +4130,8 @@ theorem map_add_left_parityAverage_alpha
     Measure.map (fun z : Z ↦ alpha + z)
         (parityAverageMeasure m alpha) =
       parityAverageMeasure m alpha := by
-  rw [parityAverageMeasure, Measure.map_smul]
+  rw [parityAverageMeasure, Measure.map_smul _
+    (f := fun z : Z ↦ alpha + z) (measurable_const.add measurable_id).aemeasurable]
   rw [Measure.map_add (doublePushforward m)
     (Measure.map (fun z : Z ↦ alpha + z) (doublePushforward m))
     (f := fun z : Z ↦ alpha + z) (measurable_const.add measurable_id)]
@@ -4152,7 +4153,8 @@ theorem map_add_left_parityAverage_of_mem_doubleRange
         (parityAverageMeasure m alpha) =
       parityAverageMeasure m alpha := by
   obtain ⟨w, rfl⟩ := hd
-  rw [parityAverageMeasure, Measure.map_smul]
+  rw [parityAverageMeasure, Measure.map_smul _
+    (f := fun z : Z ↦ (w + w) + z) (measurable_const.add measurable_id).aemeasurable]
   change (2 : ℝ≥0∞)⁻¹ •
       Measure.map (fun z : Z ↦ (w + w) + z)
         (doublePushforward m +
@@ -4945,7 +4947,7 @@ theorem eigenvector_norm_ae_const'
       ⟨v, hv0, hv⟩]
     simp
   obtain ⟨c, hc⟩ := herg.ae_eq_const_of_ae_eq_comp_ae
-    (Lp.memLp v).1.norm (by simpa [Function.comp_def] using hnormInv)
+    (Lp.aestronglyMeasurable v).norm (by simpa [Function.comp_def] using hnormInv)
   refine ⟨c, ?_, hc⟩
   intro hc0
   apply hv0
@@ -4974,15 +4976,15 @@ noncomputable def koopmanEigenfunctionRepresentative
     (mu : Measure X) (hT : MeasurePreserving T mu mu)
     (lambda : {z : ℂ // IsKoopmanEigenvalue T mu hT z}) : X → ℂ :=
   let v := normalizedKoopmanEigenvector T mu hT lambda
-  ((Lp.memLp v).1).mk v
+  (Lp.aestronglyMeasurable v).mk v
 
 theorem measurable_koopmanEigenfunctionRepresentative
     {X : Type*} [MeasurableSpace X] (T : X → X)
     (mu : Measure X) (hT : MeasurePreserving T mu mu)
     (lambda : {z : ℂ // IsKoopmanEigenvalue T mu hT z}) :
     Measurable (koopmanEigenfunctionRepresentative T mu hT lambda) := by
-  exact ((Lp.memLp
-    (normalizedKoopmanEigenvector T mu hT lambda)).1).measurable_mk
+  exact (Lp.aestronglyMeasurable
+    (normalizedKoopmanEigenvector T mu hT lambda)).measurable_mk
 
 noncomputable def koopmanEigenfunctionCircle
     {X : Type*} [MeasurableSpace X] (T : X → X)
@@ -5004,8 +5006,8 @@ theorem koopmanEigenfunctionRepresentative_ae_eq
     (lambda : {z : ℂ // IsKoopmanEigenvalue T mu hT z}) :
     koopmanEigenfunctionRepresentative T mu hT lambda =ᵐ[mu]
       (normalizedKoopmanEigenvector T mu hT lambda : X → ℂ) := by
-  exact ((Lp.memLp
-    (normalizedKoopmanEigenvector T mu hT lambda)).1).ae_eq_mk.symm
+  exact (Lp.aestronglyMeasurable
+    (normalizedKoopmanEigenvector T mu hT lambda)).ae_eq_mk.symm
 
 theorem koopmanEigenfunctionRepresentative_ne_zero_ae
     {X : Type*} [MeasurableSpace X] (T : X → X)
@@ -5099,7 +5101,7 @@ theorem measurable_kroneckerAmbientMap
     {X : Type*} [MeasurableSpace X] (T : X → X)
     (mu : Measure X) (hT : MeasurePreserving T mu mu) :
     Measurable (kroneckerAmbientMap T mu hT) := by
-  exact measurable_pi_lambda _ fun lambda =>
+  exact Measurable.of_eval fun lambda =>
     measurable_koopmanEigenfunctionCircle T mu hT lambda
 
 noncomputable def kroneckerAmbientRotation
@@ -5162,8 +5164,7 @@ instance instIsProbabilityMeasureKroneckerAmbientMeasure
     (hT : MeasurePreserving T mu mu) :
     IsProbabilityMeasure (kroneckerAmbientMeasure T mu hT) := by
   unfold kroneckerAmbientMeasure
-  exact Measure.isProbabilityMeasure_map
-    (measurable_kroneckerAmbientMap T mu hT).aemeasurable
+  infer_instance
 
 theorem ergodic_kroneckerAmbientRotation
     {X : Type*} [MeasurableSpace X] [TopologicalSpace X]
@@ -5378,9 +5379,7 @@ theorem support_eq_vadd_topologicalClosure_zmultiples
 noncomputable def addTranslateProbability
     {Z : Type*} [MeasurableSpace Z] [Add Z] [MeasurableAdd₂ Z]
     (m : Measure Z) [IsProbabilityMeasure m] (q : Z) : ProbabilityMeasure Z :=
-  ⟨Measure.map (fun z : Z ↦ q + z) m, by
-    exact Measure.isProbabilityMeasure_map
-      (measurable_const.add measurable_id).aemeasurable⟩
+  ⟨Measure.map (fun z : Z ↦ q + z) m, inferInstance⟩
 
 @[simp] theorem addTranslateProbability_coe
     {Z : Type*} [MeasurableSpace Z] [Add Z] [MeasurableAdd₂ Z]
@@ -5641,7 +5640,7 @@ theorem kroneckerFactorMap_coe_ae
   change kroneckerAmbientMap T mu hT.toMeasurePreserving x -
       kroneckerAmbientBasepoint T mu hT ∈
         KroneckerSubgroup T mu hT.toMeasurePreserving at hmem
-  rw [kroneckerFactorMap, dif_pos hmem]
+  rw [kroneckerFactorMap, dite_eq_left hmem]
 
 noncomputable def kroneckerSubgroupRotation
     {X : Type*} [MeasurableSpace X] [TopologicalSpace X]
@@ -5726,7 +5725,7 @@ instance instIsProbabilityMeasureKroneckerFactorMeasure
     (T : X → X) (mu : Measure X) [IsProbabilityMeasure mu]
     (hT : Ergodic T mu) : IsProbabilityMeasure (kroneckerFactorMeasure T mu hT) := by
   unfold kroneckerFactorMeasure
-  exact Measure.isProbabilityMeasure_map (measurable_kroneckerFactorMap T mu hT).aemeasurable
+  infer_instance
 
 theorem ergodic_kroneckerSubgroupRotation
     {X : Type*} [MeasurableSpace X] [TopologicalSpace X]
@@ -5835,7 +5834,7 @@ theorem kroneckerFiberKernel_fiber
   have hjoint : m ⊗ₘ eta = mu.map (fun x ↦ (pi x, id x)) := by
     simpa only [m, eta, pi, kroneckerFactorMeasure, kroneckerFiberKernel] using
       (compProd_map_condDistrib (μ := mu) (X := kroneckerFactorMap T mu hT)
-        (Y := id) aemeasurable_id)
+        (Y := id) (measurable_kroneckerFactorMap T mu hT).aemeasurable aemeasurable_id)
   have hgraph' : ∀ᵐ p ∂m ⊗ₘ eta, pi p.2 = p.1 := by
     rw [hjoint]
     exact hgraph
@@ -5882,8 +5881,7 @@ instance instIsProbabilityMeasureKroneckerGraphMeasure
     (T : X → X) (mu : Measure X) [IsProbabilityMeasure mu]
     (hT : Ergodic T mu) : IsProbabilityMeasure (kroneckerGraphMeasure T mu hT) := by
   unfold kroneckerGraphMeasure
-  exact Measure.isProbabilityMeasure_map
-    (measurable_kroneckerGraphMap T mu hT).aemeasurable
+  infer_instance
 
 noncomputable def kroneckerGraphTransform
     {X : Type*} [MeasurableSpace X] [TopologicalSpace X]

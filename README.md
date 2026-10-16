@@ -30,8 +30,9 @@ in `NOTICE` and `LICENSE`.
 
 This adaptation splits the 10,574-line source into two modules, adds module
 visibility and necessary explicit imports, and supplies the independent
-Challenge/Solution interface and registry metadata. The proof bodies are
-preserved. No new mathematical result or independent discovery is claimed.
+Challenge/Solution interface and registry metadata. Compatibility edits adapt
+proof terms to Mathlib 4.35 without changing the mathematical statements.
+No new mathematical result or independent discovery is claimed.
 The human user directing this package attests that they are an author or
 maintainer of the substantive formalization; the responsible account is
 `AItoBit`. Automated source and fidelity audits are not human expert review.
@@ -52,7 +53,7 @@ The proof development and Solution contain no placeholders or new axioms.
 
 ## Reproduction
 
-The adapted source is first checked locally with Lean 4.33.1 and Mathlib
+The initial module adaptation was checked locally with Lean 4.33.1 and Mathlib
 `0df444a360eaa60ab8c11dca51a86af692955474`, using
 `lake --wfail build Solution Challenge` and `lake env lean Audit.lean`.
 The evidence is in `verification/`.
@@ -61,6 +62,8 @@ Palomar requires the bundled Comparator introduced in Lean 4.35.0-rc2, so the
 submission snapshot is separately pinned to that Lean and Mathlib release.
 Its full mechanical preflight uses the pinned reusable Palomar workflow.
 Local 4.33.1 checks and the supported-toolchain preflight are separate checks.
+After the API port, an isolated local build with the pinned 4.35.0-rc2
+environment also passes `lake --wfail build Solution Challenge`.
 
 Submission is through [Palomar](https://submit.palomar-registry.org/). The
 exact snapshot and maintainer declaration require user agreement before

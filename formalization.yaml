@@ -61,7 +61,7 @@ automation:
         wall_time: "not tracked"
         spend_usd: "not tracked"
         hardware: "local Windows machine and GitHub Actions"
-      prompting_notes: "Reproduce the exact original statement, preserve proof bodies and provenance, split oversized files, and verify principal axioms."
+      prompting_notes: "Reproduce the exact original statement and substantive proof, preserve provenance, split oversized files, adapt Mathlib API calls, and verify principal axioms."
   spend_usd: "not tracked"
   notes: "The source lists OpenAI Codex and GPT-5.6 Sol; the incorporated Kitware source also credits Claude Opus 5. This adaptation is human-directed. Automated agents are not listed as human project authors or human expert reviewers."
 fidelity:
@@ -73,7 +73,7 @@ fidelity:
 review:
   status: "independent automated source and proof-fidelity audits; no human expert review claimed"
   reviewers: []
-  notes: "Auditors checked the original PDF, published theorem, all target definitions and quantifiers, the main proof dependency chain, and preservation of original proof bodies after splitting. Compiler and axiom evidence are recorded separately."
+  notes: "Auditors checked the original PDF, published theorem, all target definitions and quantifiers, the main proof dependency chain, and the module split. Mathlib API compatibility edits preserve the statements. Compiler and axiom evidence are recorded separately."
 alignment:
   namespace: "Palomar656"
   statements:

@@ -75,7 +75,7 @@ theorem eq_smul_of_same_koopman_eigenvalue
   have hwe := koopman_eigen_ae T mu hT.1 hw
   let q : X → ℂ := fun x => v x * star (w x)
   have hqm : AEStronglyMeasurable q mu :=
-    (Lp.memLp v).1.mul (Lp.memLp w).1.star
+    (Lp.aestronglyMeasurable v).mul (Lp.aestronglyMeasurable w).star
   have hqinv : q ∘ T =ᵐ[mu] q := by
     filter_upwards [hve, hwe] with x hvx hwx
     dsimp only [q, Function.comp_apply]
@@ -200,9 +200,9 @@ noncomputable def lpTensor
     (r s : Lp ℂ (2 : ℝ≥0∞) mu) :
     Lp ℂ (2 : ℝ≥0∞) (mu.prod mu) := by
   let f : X × X → ℂ := fun p => r p.1 * s p.2
-  have hrp := (Lp.memLp r).comp_fst mu
-  have hsp := (Lp.memLp s).comp_snd mu
-  have hfm : AEStronglyMeasurable f (mu.prod mu) := hrp.1.mul hsp.1
+  have hrp := (Lp.aestronglyMeasurable r).comp_fst (ν := mu)
+  have hsp := (Lp.aestronglyMeasurable s).comp_snd (μ := mu)
+  have hfm : AEStronglyMeasurable f (mu.prod mu) := hrp.mul hsp
   have hrint : Integrable (fun x => ‖r x‖ ^ 2) mu :=
     (memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable r)).mp (Lp.memLp r)
   have hsint : Integrable (fun x => ‖s x‖ ^ 2) mu :=
@@ -221,7 +221,8 @@ theorem lpTensor_coe_ae
       fun p => r p.1 * s p.2 := by
   let f : X × X → ℂ := fun p => r p.1 * s p.2
   have hfm : AEStronglyMeasurable f (mu.prod mu) :=
-    ((Lp.memLp r).comp_fst mu).1.mul ((Lp.memLp s).comp_snd mu).1
+    ((Lp.aestronglyMeasurable r).comp_fst (ν := mu)).mul
+      ((Lp.aestronglyMeasurable s).comp_snd (μ := mu))
   have hrint : Integrable (fun x => ‖r x‖ ^ 2) mu :=
     (memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable r)).mp (Lp.memLp r)
   have hsint : Integrable (fun x => ‖s x‖ ^ 2) mu :=
@@ -1182,7 +1183,8 @@ noncomputable def lpTensorReal
     Lp ℝ (2 : ℝ≥0∞) (mu.prod mu) := by
   let f : X × X → ℝ := fun p => r p.1 * s p.2
   have hfm : AEStronglyMeasurable f (mu.prod mu) :=
-    ((Lp.memLp r).comp_fst mu).1.mul ((Lp.memLp s).comp_snd mu).1
+    ((Lp.aestronglyMeasurable r).comp_fst (ν := mu)).mul
+      ((Lp.aestronglyMeasurable s).comp_snd (μ := mu))
   have hrint : Integrable (fun x => ‖r x‖ ^ 2) mu :=
     (memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable r)).mp (Lp.memLp r)
   have hsint : Integrable (fun x => ‖s x‖ ^ 2) mu :=
@@ -1201,7 +1203,8 @@ theorem lpTensorReal_coe_ae
       fun p => r p.1 * s p.2 := by
   let f : X × X → ℝ := fun p => r p.1 * s p.2
   have hfm : AEStronglyMeasurable f (mu.prod mu) :=
-    ((Lp.memLp r).comp_fst mu).1.mul ((Lp.memLp s).comp_snd mu).1
+    ((Lp.aestronglyMeasurable r).comp_fst (ν := mu)).mul
+      ((Lp.aestronglyMeasurable s).comp_snd (μ := mu))
   have hrint : Integrable (fun x => ‖r x‖ ^ 2) mu :=
     (memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable r)).mp (Lp.memLp r)
   have hsint : Integrable (fun x => ‖s x‖ ^ 2) mu :=
@@ -2401,7 +2404,7 @@ theorem compProd_kroneckerFiberKernel
       Measure.map (fun x => (kroneckerFactorMap T mu hT x, x)) mu := by
   simpa only [kroneckerFiberKernel, kroneckerFactorMeasure, id_eq] using
     (compProd_map_condDistrib (μ := mu) (X := kroneckerFactorMap T mu hT)
-      (Y := id) aemeasurable_id)
+      (Y := id) (measurable_kroneckerFactorMap T mu hT).aemeasurable aemeasurable_id)
 
 noncomputable def kroneckerGraphFiberKernel
     {X : Type*} [MeasurableSpace X] [TopologicalSpace X]
@@ -3887,7 +3890,7 @@ theorem measurableSet_conditionalSupportApproxDensitySet
       obtain ⟨N, hN⟩ := (hx i hxi).2
       exact ⟨N, fun n ↦ by
         by_cases hn : N ≤ n
-        · rw [if_pos hn]
+        · rw [ite_eq_left hn]
           exact hN n hn
         · simp [hn]⟩
     · exact Or.inl hxi
@@ -3897,7 +3900,7 @@ theorem measurableSet_conditionalSupportApproxDensitySet
     · refine ⟨hgood.1, ?_⟩
       obtain ⟨N, hN⟩ := hgood.2
       exact ⟨N, fun n hn ↦ by
-        simpa only [if_pos hn, Set.mem_compl_iff, Set.mem_preimage] using hN n⟩
+        simpa only [ite_eq_left hn, Set.mem_compl_iff, Set.mem_preimage] using hN n⟩
 
 theorem ae_mem_conditionalSupportApproxDensitySet
     {Z X : Type*} [PseudoMetricSpace Z] [MeasurableSpace Z]

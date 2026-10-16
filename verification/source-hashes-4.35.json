@@ -1,0 +1,26 @@
+[
+  {
+    "path": "Erdos656.lean",
+    "sha256": "dcaa3a3b81029c5f108f910e487d789d6e07ff2b33aac233e07d5d18e82f07fe"
+  },
+  {
+    "path": "Challenge.lean",
+    "sha256": "cf13895af045c973c226169b616723be2864ad604b75706bc068c72b986dcaa9"
+  },
+  {
+    "path": "Solution.lean",
+    "sha256": "e3a86ba2aa89ef20d80e8d85184b7e2d06a408ad55e9d38c9fdaff7bdf995bdd"
+  },
+  {
+    "path": "Audit.lean",
+    "sha256": "75585e4fa6dd71fe6c1bf16ce9bd6aae572d6282dc0bb0b33a15aeaf1d0c749c"
+  },
+  {
+    "path": "Erdos656/Foundation.lean",
+    "sha256": "001aaa20dd25bc035e1c3c496eab0301b2bb2ff8d4b8811884fb158ccb53025e"
+  },
+  {
+    "path": "Erdos656/Proof.lean",
+    "sha256": "b2bd1e120c68c33745d1cbbbec399f8bf13dc44aed2acd498d20943d24d0a9a9"
+  }
+]
